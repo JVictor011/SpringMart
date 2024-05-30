@@ -4,6 +4,7 @@ import aj.org.objectweb.asm.Opcodes;
 import com.example.crud.domain.product.Product;
 import com.example.crud.domain.product.ProductRepository;
 import com.example.crud.domain.product.RequestProduct;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +41,9 @@ public class ProductController {
             product.setName(data.name());
             product.setPrice_in_cents(data.price_in_cents());
             return ResponseEntity.ok(product);
+        }else{
+            throw new EntityNotFoundException();
         }
-        return ResponseEntity.notFound().build();
 
     }
 
@@ -53,8 +55,9 @@ public class ProductController {
             Product product = optionalProduct.get();
             product.setActive(false);
             return ResponseEntity.noContent().build();
+        }else{
+            throw new EntityNotFoundException();
         }
-        return ResponseEntity.badRequest().build();
     }
 
 }
