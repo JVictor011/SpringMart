@@ -1,5 +1,6 @@
 package com.example.crud.controllers;
 
+import aj.org.objectweb.asm.Opcodes;
 import com.example.crud.domain.product.Product;
 import com.example.crud.domain.product.ProductRepository;
 import com.example.crud.domain.product.RequestProduct;
@@ -19,7 +20,7 @@ public class ProductController {
     private ProductRepository repository;
     @GetMapping
     public ResponseEntity getAllProducts(){
-        var allProducts = repository.findAll();
+        var allProducts = repository.findAllByActiveTrue();
         return ResponseEntity.ok(allProducts);
     }
 
@@ -39,15 +40,21 @@ public class ProductController {
             product.setName(data.name());
             product.setPrice_in_cents(data.price_in_cents());
             return ResponseEntity.ok(product);
-        } else {
-            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.notFound().build();
+
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity deleteProduct(@PathVariable String id){
-        repository.deleteById(id);
-        return ResponseEntity.noContent().build();
+        Optional<Product> optionalProduct = repository.findById(id);
+        if(optionalProduct.isPresent()){
+            Product product = optionalProduct.get();
+            product.setActive(false);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 
 }
