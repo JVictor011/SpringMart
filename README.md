@@ -99,6 +99,10 @@ SpringMart é uma aplicação de gerenciamento de produtos construída com Java 
 
   Retorna todos os produtos ativos.
 
+  ### `GET /product/{id}`
+
+  Retorna um produto.
+
   ### `POST /product`
 
   Cadastra um novo produto.
@@ -116,7 +120,8 @@ SpringMart é uma aplicação de gerenciamento de produtos construída com Java 
   Desativa um produto (marca como inativo).
 
   - **Parâmetro**: `id` do produto (String).
-  
+
   ## Documentação da API
+
   Para visualizar a documentação da API e testar os endpoints, acesse o Swagger UI:
   [Swagger UI](http://localhost:8080/swagger-ui/index.html#/)

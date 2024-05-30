@@ -19,10 +19,22 @@ import java.util.UUID;
 public class ProductController {
     @Autowired
     private ProductRepository repository;
+    
     @GetMapping
     public ResponseEntity getAllProducts(){
         var allProducts = repository.findAllByActiveTrue();
         return ResponseEntity.ok(allProducts);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity getProduct(@PathVariable String id){
+        Optional<Product> optionalProduct = repository.findById(id);
+        if (optionalProduct.isPresent()){
+            Product product = optionalProduct.get();
+            return ResponseEntity.ok(product);
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 
     @PostMapping
